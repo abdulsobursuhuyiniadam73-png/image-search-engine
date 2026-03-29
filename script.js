@@ -8,6 +8,10 @@ const viewSavedBtn = document.getElementById("view-saved-btn");
 // Theme Toggle
 const themeToggle = document.getElementById("theme-toggle");
 
+// Online Icons
+const moonIcon = "https://cdn-icons-png.flaticon.com/512/747/747376.png";
+const sunIcon = "https://cdn-icons-png.flaticon.com/512/869/869869.png";
+
 // Modal
 const modal = document.getElementById("image-modal");
 const modalImg = document.getElementById("modal-img");
@@ -22,26 +26,27 @@ let isLoading = false;
 let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
 
-//THEME FUNCTIONALITY
+// 🌙 THEME FUNCTIONALITY
 
-// Load saved theme
-if(localStorage.getItem("theme") === "dark"){
-    document.body.classList.add("dark-theme");
-    if(themeToggle) themeToggle.src = "images/sun.png";
-} else {
-    if(themeToggle) themeToggle.src = "images/moon.png";
-}
-
-// Toggle theme
 if(themeToggle){
+
+    // Load saved theme
+    if(localStorage.getItem("theme") === "dark"){
+        document.body.classList.add("dark-theme");
+        themeToggle.src = sunIcon;
+    } else {
+        themeToggle.src = moonIcon;
+    }
+
+    // Toggle theme
     themeToggle.addEventListener("click", () => {
         document.body.classList.toggle("dark-theme");
 
         if(document.body.classList.contains("dark-theme")){
-            themeToggle.src = "images/sun.png";
+            themeToggle.src = sunIcon;
             localStorage.setItem("theme", "dark");
         } else {
-            themeToggle.src = "images/moon.png";
+            themeToggle.src = moonIcon;
             localStorage.setItem("theme", "light");
         }
     });
@@ -51,7 +56,7 @@ function saveToLocalStorage() {
     localStorage.setItem("favorites", JSON.stringify(favorites));
 }
 
-// Function to create download button with blob-based download
+// Download button (blob method)
 function createDownloadButton(imageUrl) {
     const downloadBtn = document.createElement("img");
     downloadBtn.src = "download.jpeg";
