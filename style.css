@@ -93,6 +93,18 @@ button{
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 20px;
 }
+
+#view-saved-btn{
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background: #00c896;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
 #search-result div{
     position: relative;
 }
