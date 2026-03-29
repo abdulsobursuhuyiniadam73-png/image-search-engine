@@ -22,6 +22,40 @@ function saveToLocalStorage() {
     localStorage.setItem("favorites", JSON.stringify(favorites));
 }
 
+// Function to create download button with blob-based download
+function createDownloadButton(imageUrl) {
+    const downloadBtn = document.createElement("img");
+    downloadBtn.src = "download.jpeg"; // your icon file
+    downloadBtn.style.position = "absolute";
+    downloadBtn.style.bottom = "10px";
+    downloadBtn.style.right = "15px";
+    downloadBtn.style.width = "24px";
+    downloadBtn.style.height = "24px";
+    downloadBtn.style.cursor = "pointer";
+    downloadBtn.style.background = "rgba(0,0,0,0.4)";
+    downloadBtn.style.borderRadius = "50%";
+    downloadBtn.style.padding = "5px";
+
+    downloadBtn.addEventListener("click", async (e) => {
+        e.stopPropagation(); // prevent modal from opening
+        try {
+            const response = await fetch(imageUrl);
+            const blob = await response.blob();
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "image.jpg";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+        } catch (err) {
+            console.error("Download failed", err);
+        }
+    });
+
+    return downloadBtn;
+}
+
 // Display images (search results or saved)
 function displayImages(images) {
     searchResult.innerHTML = "";
@@ -52,27 +86,7 @@ function displayImages(images) {
         });
 
         // Download button
-        const downloadBtn = document.createElement("img");
-        downloadBtn.src = "download.jpeg"; // your icon file
-        downloadBtn.style.position = "absolute";
-        downloadBtn.style.bottom = "10px";
-        downloadBtn.style.right = "15px";
-        downloadBtn.style.width = "24px";
-        downloadBtn.style.height = "24px";
-        downloadBtn.style.cursor = "pointer";
-        downloadBtn.style.background = "rgba(0,0,0,0.4)";
-        downloadBtn.style.borderRadius = "50%";
-        downloadBtn.style.padding = "5px";
-
-        downloadBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            const link = document.createElement("a");
-            link.href = src;
-            link.download = "image.jpg";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
+        const downloadBtn = createDownloadButton(src);
 
         // Open modal on image click
         image.addEventListener("click", () => {
@@ -110,9 +124,7 @@ async function searchImages() {
         const data = await response.json();
         const results = data.results;
 
-        if (page === 1) {
-            searchResult.innerHTML = "";
-        }
+        if (page === 1) searchResult.innerHTML = "";
 
         results.forEach((result) => {
             const container = document.createElement("div");
@@ -144,28 +156,8 @@ async function searchImages() {
                 saveToLocalStorage();
             });
 
-            // Download button
-            const downloadBtn = document.createElement("img");
-            downloadBtn.src = "download.jpeg"; // your icon file
-            downloadBtn.style.position = "absolute";
-            downloadBtn.style.bottom = "10px";
-            downloadBtn.style.right = "15px";
-            downloadBtn.style.width = "24px";
-            downloadBtn.style.height = "24px";
-            downloadBtn.style.cursor = "pointer";
-            downloadBtn.style.background = "rgba(0,0,0,0.4)";
-            downloadBtn.style.borderRadius = "50%";
-            downloadBtn.style.padding = "5px";
-
-            downloadBtn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                const link = document.createElement("a");
-                link.href = result.urls.full;
-                link.download = "image.jpg";
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            });
+            // Download button (high-res)
+            const downloadBtn = createDownloadButton(result.urls.full);
 
             // Open modal
             image.addEventListener("click", () => {
@@ -181,7 +173,7 @@ async function searchImages() {
 
         page++;
     } catch (error) {
-        console.log("Error:", error);
+        console.error("Error:", error);
     }
 
     isLoading = false;
@@ -190,7 +182,6 @@ async function searchImages() {
 // Infinite scroll
 window.addEventListener("scroll", () => {
     if (showingSaved) return;
-
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
         searchImages();
     }
@@ -220,7 +211,5 @@ closeBtn.addEventListener("click", () => {
 });
 
 modal.addEventListener("click", (e) => {
-    if (e.target === modal) {
-        modal.style.display = "none";
-    }
+    if (e.target === modal) modal.style.display = "none";
 });
