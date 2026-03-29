@@ -5,58 +5,40 @@
     box-sizing: border-box;
 }
 
-
 body{
     background: #39297b;
     color: white;
 }
-/* Modal */
-#image-modal{
+
+/* Fixed Title */
+h1{
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.9);
-    display: none;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
+    font-weight: 600;
+    background: #39297b;
+    color: white;
+    padding: 20px 0;
     z-index: 1000;
 }
 
-#image-modal img{
-    max-width: 90%;
-    max-height: 80%;
-    border-radius: 8px;
-}
-
-#close-btn{
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    font-size: 35px;
-    color: white;
-    cursor: pointer;
-}
-
-/* Title */
-h1{
-    text-align: center;
-    margin: 100px auto 50px;
-    font-weight: 600;
-}
-
-/* Search Form */
+/* Fixed Search Form */
 form{
+    position: fixed;
+    top: 70px; /* below title */
+    left: 50%;
+    transform: translateX(-50%);
     width: 90%;
     max-width: 600px;
-    margin: auto;
-    height: 80px;
+    height: 60px;
     background: #434989;
     display: flex;
     align-items: center;
     border-radius: 8px;
     overflow: hidden;
+    z-index: 999;
 }
 
 form input{
@@ -86,11 +68,10 @@ button{
     font-size: 18px;
 }
 
-
 /* Image Grid */
 #search-result{
     width: 90%;
-    margin: 50px auto;
+    margin: 150px auto 50px; /* space for fixed title + search */
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 20px;
@@ -107,22 +88,6 @@ button{
     cursor: pointer;
 }
 
-#search-result div{
-    position: relative;
-}
-
-#search-result span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-    transition: transform 0.2s;
-}
-
-#search-result span:hover {
-    transform: scale(1.2);
-}
-
 #search-result img{
     width: 100%;
     height: 200px;
@@ -135,16 +100,46 @@ button{
     transform: scale(1.05);
 }
 
+/* Modal */
+#image-modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#image-modal img{
+    max-width: 90%;
+    max-height: 80%;
+    border-radius: 8px;
+}
+
+#close-btn{
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 35px;
+    color: white;
+    cursor: pointer;
+}
+
 /* 📱 Mobile Responsiveness */
 @media (max-width: 600px){
 
     h1{
         font-size: 22px;
-        margin: 60px auto 30px;
+        padding: 15px 0;
     }
 
     form{
-        height: 60px;
+        top: 60px;
+        height: 50px;
     }
 
     form input{
@@ -158,6 +153,7 @@ button{
     }
 
     #search-result{
+        margin-top: 120px;
         gap: 12px;
     }
 
