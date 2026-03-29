@@ -18,12 +18,12 @@ let isLoading = false;
 // Load saved images
 let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
-function saveToLocalStorage(){
+function saveToLocalStorage() {
     localStorage.setItem("favorites", JSON.stringify(favorites));
 }
 
 // Display images (search results or saved)
-function displayImages(images){
+function displayImages(images) {
     searchResult.innerHTML = "";
 
     images.forEach((src) => {
@@ -52,15 +52,13 @@ function displayImages(images){
         });
 
         // Download button
-        const downloadBtn = document.createElement("span");
-        downloadBtn.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 24 24">
-          <path d="M5 20h14v-2H5v2zm7-18v12l5-5h-3V4h-4v5H7l5 5z"/>
-        </svg>
-        `;
+        const downloadBtn = document.createElement("img");
+        downloadBtn.src = "download.jpeg"; // your icon file
         downloadBtn.style.position = "absolute";
         downloadBtn.style.bottom = "10px";
         downloadBtn.style.right = "15px";
+        downloadBtn.style.width = "24px";
+        downloadBtn.style.height = "24px";
         downloadBtn.style.cursor = "pointer";
         downloadBtn.style.background = "rgba(0,0,0,0.4)";
         downloadBtn.style.borderRadius = "50%";
@@ -90,34 +88,33 @@ function displayImages(images){
 }
 
 // Show saved images
-function displaySaved(){
+function displaySaved() {
     showingSaved = true;
     viewSavedBtn.textContent = "Back to Search 🔍";
     displayImages(favorites);
 }
 
 // Fetch images from Unsplash
-async function searchImages(){
-    if(isLoading) return;
+async function searchImages() {
+    if (isLoading) return;
 
     keyword = searchBox.value;
-    if(!keyword) return;
+    if (!keyword) return;
 
     isLoading = true;
 
     const url = `https://api.unsplash.com/search/photos?page=${page}&query=${keyword}&client_id=${accesskey}&per_page=12`;
 
-    try{
+    try {
         const response = await fetch(url);
         const data = await response.json();
-
         const results = data.results;
 
-        if(page === 1){
+        if (page === 1) {
             searchResult.innerHTML = "";
         }
 
-        results.forEach((result) =>{
+        results.forEach((result) => {
             const container = document.createElement("div");
             container.style.position = "relative";
 
@@ -137,7 +134,7 @@ async function searchImages(){
 
             favBtn.addEventListener("click", (e) => {
                 e.stopPropagation();
-                if(favorites.includes(result.urls.small)){
+                if (favorites.includes(result.urls.small)) {
                     favorites = favorites.filter(img => img !== result.urls.small);
                     favBtn.innerHTML = "♡";
                 } else {
@@ -148,15 +145,13 @@ async function searchImages(){
             });
 
             // Download button
-            const downloadBtn = document.createElement("span");
-            downloadBtn.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 24 24">
-              <path d="M5 20h14v-2H5v2zm7-18v12l5-5h-3V4h-4v5H7l5 5z"/>
-            </svg>
-            `;
+            const downloadBtn = document.createElement("img");
+            downloadBtn.src = "download.jpeg"; // your icon file
             downloadBtn.style.position = "absolute";
             downloadBtn.style.bottom = "10px";
             downloadBtn.style.right = "15px";
+            downloadBtn.style.width = "24px";
+            downloadBtn.style.height = "24px";
             downloadBtn.style.cursor = "pointer";
             downloadBtn.style.background = "rgba(0,0,0,0.4)";
             downloadBtn.style.borderRadius = "50%";
@@ -165,7 +160,7 @@ async function searchImages(){
             downloadBtn.addEventListener("click", (e) => {
                 e.stopPropagation();
                 const link = document.createElement("a");
-                link.href = result.urls.full; // high-res download
+                link.href = result.urls.full;
                 link.download = "image.jpg";
                 document.body.appendChild(link);
                 link.click();
@@ -185,8 +180,7 @@ async function searchImages(){
         });
 
         page++;
-
-    } catch(error){
+    } catch (error) {
         console.log("Error:", error);
     }
 
@@ -195,16 +189,16 @@ async function searchImages(){
 
 // Infinite scroll
 window.addEventListener("scroll", () => {
-    if(showingSaved) return;
+    if (showingSaved) return;
 
-    if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 500){
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
         searchImages();
     }
 });
 
 // Toggle saved view
 viewSavedBtn.addEventListener("click", () => {
-    if(showingSaved){
+    if (showingSaved) {
         searchResult.innerHTML = "";
         viewSavedBtn.textContent = "View Saved ❤️";
         showingSaved = false;
@@ -214,7 +208,7 @@ viewSavedBtn.addEventListener("click", () => {
 });
 
 // Search form submit
-searchForm.addEventListener("submit",(e) =>{
+searchForm.addEventListener("submit", (e) => {
     e.preventDefault();
     page = 1;
     searchImages();
@@ -226,7 +220,7 @@ closeBtn.addEventListener("click", () => {
 });
 
 modal.addEventListener("click", (e) => {
-    if(e.target === modal){
+    if (e.target === modal) {
         modal.style.display = "none";
     }
 });
