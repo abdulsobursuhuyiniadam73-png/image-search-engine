@@ -121,18 +121,6 @@ button{
     transform: scale(1.05);
 }
 
-/* Show More Button */
-#show-more-btn{
-    background: #ff3929;
-    color: white;
-    border: 0;
-    outline: 0;
-    padding: 12px 25px;
-    border-radius: 4px;
-    margin: 20px auto 100px;
-    cursor: pointer;
-    display: none;
-}
 
 /* 📱 Mobile Responsiveness */
 @media (max-width: 600px){
