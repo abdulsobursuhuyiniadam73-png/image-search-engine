@@ -3,7 +3,6 @@ const accesskey = "f_qLlxzeEDP6snBoyk6leBDrY8scHwnziPYjSw1JVzk";
 const searchForm = document.getElementById("search-form");
 const searchBox = document.getElementById("search-box");
 const searchResult = document.getElementById("search-result");
-const showMoreBtn = document.getElementById("show-more-btn");
 const viewSavedBtn = document.getElementById("view-saved-btn");
 
 // Modal
@@ -14,6 +13,7 @@ const closeBtn = document.getElementById("close-btn");
 let keyword = "";
 let page = 1;
 let showingSaved = false;
+let isLoading = false;
 
 // Load saved images
 let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -31,7 +31,6 @@ function displayImages(images){
         const image = document.createElement("img");
         image.src = src;
 
-        // Remove from favorites
         const favBtn = document.createElement("span");
         favBtn.innerHTML = "❤️";
         favBtn.style.position = "absolute";
@@ -46,7 +45,6 @@ function displayImages(images){
             displaySaved();
         });
 
-        // Modal
         image.addEventListener("click", () => {
             modal.style.display = "flex";
             modalImg.src = src;
@@ -61,13 +59,12 @@ function displayImages(images){
 function displaySaved(){
     showingSaved = true;
     viewSavedBtn.textContent = "Back to Search 🔍";
-    showMoreBtn.style.display = "none";
     displayImages(favorites);
 }
 
 async function searchImages(){
-    showingSaved = false;
-    viewSavedBtn.textContent = "View Saved ❤️";
+    if(isLoading) return;
+    isLoading = true;
 
     keyword = searchBox.value;
     if(!keyword) return;
@@ -89,7 +86,6 @@ async function searchImages(){
         const image = document.createElement("img");
         image.src = result.urls.small;
 
-        // ❤️ Favorite button
         const favBtn = document.createElement("span");
         favBtn.innerHTML = favorites.includes(result.urls.small) ? "❤️" : "♡";
         favBtn.style.position = "absolute";
@@ -111,7 +107,6 @@ async function searchImages(){
             saveToLocalStorage();
         });
 
-        // Modal
         image.addEventListener("click", () => {
             modal.style.display = "flex";
             modalImg.src = result.urls.regular;
@@ -122,14 +117,23 @@ async function searchImages(){
         searchResult.appendChild(container);
     });
 
-    showMoreBtn.style.display = "block";
+    page++;
+    isLoading = false;
 }
+
+// Scroll detection 
+window.addEventListener("scroll", () => {
+    if(showingSaved) return;
+
+    if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 500){
+        searchImages();
+    }
+});
 
 // Toggle saved view
 viewSavedBtn.addEventListener("click", () => {
     if(showingSaved){
         searchResult.innerHTML = "";
-        showMoreBtn.style.display = "none";
         viewSavedBtn.textContent = "View Saved ❤️";
         showingSaved = false;
     } else {
@@ -141,12 +145,6 @@ viewSavedBtn.addEventListener("click", () => {
 searchForm.addEventListener("submit",(e) =>{
     e.preventDefault();
     page = 1;
-    searchImages();
-});
-
-// Show more
-showMoreBtn.addEventListener("click",() => {
-    page++;
     searchImages();
 });
 
