@@ -122,24 +122,6 @@ button{
     transform: scale(1.05);
 }
 
-/* Loader */
-#loader{
-    width: 60px;
-    height: 60px;
-    border: 6px solid #fff;
-    border-top: 6px solid #ff3929;
-    border-radius: 50%;
-    margin: 40px auto;
-    display: none;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin{
-    100%{
-        transform: rotate(360deg);
-    }
-}
-
 /* 📱 Mobile Responsiveness */
 @media (max-width: 600px){
 
