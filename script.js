@@ -22,22 +22,27 @@ function saveToLocalStorage(){
     localStorage.setItem("favorites", JSON.stringify(favorites));
 }
 
-// Display saved images
+// Display images (search results or saved)
 function displayImages(images){
     searchResult.innerHTML = "";
 
-    images.forEach((src) =>{
+    images.forEach((src) => {
         const container = document.createElement("div");
+        container.style.position = "relative";
 
         const image = document.createElement("img");
         image.src = src;
 
+        // Favorite button
         const favBtn = document.createElement("span");
         favBtn.innerHTML = "❤️";
         favBtn.style.position = "absolute";
         favBtn.style.top = "10px";
         favBtn.style.right = "15px";
         favBtn.style.cursor = "pointer";
+        favBtn.style.background = "rgba(0,0,0,0.4)";
+        favBtn.style.borderRadius = "50%";
+        favBtn.style.padding = "5px";
 
         favBtn.addEventListener("click", (e) => {
             e.stopPropagation();
@@ -46,6 +51,32 @@ function displayImages(images){
             displaySaved();
         });
 
+        // Download button
+        const downloadBtn = document.createElement("span");
+        downloadBtn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 24 24">
+          <path d="M5 20h14v-2H5v2zm7-18v12l5-5h-3V4h-4v5H7l5 5z"/>
+        </svg>
+        `;
+        downloadBtn.style.position = "absolute";
+        downloadBtn.style.bottom = "10px";
+        downloadBtn.style.right = "15px";
+        downloadBtn.style.cursor = "pointer";
+        downloadBtn.style.background = "rgba(0,0,0,0.4)";
+        downloadBtn.style.borderRadius = "50%";
+        downloadBtn.style.padding = "5px";
+
+        downloadBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const link = document.createElement("a");
+            link.href = src;
+            link.download = "image.jpg";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // Open modal on image click
         image.addEventListener("click", () => {
             modal.style.display = "flex";
             modalImg.src = src;
@@ -53,18 +84,19 @@ function displayImages(images){
 
         container.appendChild(image);
         container.appendChild(favBtn);
+        container.appendChild(downloadBtn);
         searchResult.appendChild(container);
     });
 }
 
-// Show saved
+// Show saved images
 function displaySaved(){
     showingSaved = true;
     viewSavedBtn.textContent = "Back to Search 🔍";
     displayImages(favorites);
 }
 
-// Fetch images
+// Fetch images from Unsplash
 async function searchImages(){
     if(isLoading) return;
 
@@ -87,20 +119,24 @@ async function searchImages(){
 
         results.forEach((result) =>{
             const container = document.createElement("div");
+            container.style.position = "relative";
 
             const image = document.createElement("img");
             image.src = result.urls.small;
 
+            // Favorite button
             const favBtn = document.createElement("span");
             favBtn.innerHTML = favorites.includes(result.urls.small) ? "❤️" : "♡";
             favBtn.style.position = "absolute";
             favBtn.style.top = "10px";
             favBtn.style.right = "15px";
             favBtn.style.cursor = "pointer";
+            favBtn.style.background = "rgba(0,0,0,0.4)";
+            favBtn.style.borderRadius = "50%";
+            favBtn.style.padding = "5px";
 
             favBtn.addEventListener("click", (e) => {
                 e.stopPropagation();
-
                 if(favorites.includes(result.urls.small)){
                     favorites = favorites.filter(img => img !== result.urls.small);
                     favBtn.innerHTML = "♡";
@@ -108,10 +144,35 @@ async function searchImages(){
                     favorites.push(result.urls.small);
                     favBtn.innerHTML = "❤️";
                 }
-
                 saveToLocalStorage();
             });
 
+            // Download button
+            const downloadBtn = document.createElement("span");
+            downloadBtn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 24 24">
+              <path d="M5 20h14v-2H5v2zm7-18v12l5-5h-3V4h-4v5H7l5 5z"/>
+            </svg>
+            `;
+            downloadBtn.style.position = "absolute";
+            downloadBtn.style.bottom = "10px";
+            downloadBtn.style.right = "15px";
+            downloadBtn.style.cursor = "pointer";
+            downloadBtn.style.background = "rgba(0,0,0,0.4)";
+            downloadBtn.style.borderRadius = "50%";
+            downloadBtn.style.padding = "5px";
+
+            downloadBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const link = document.createElement("a");
+                link.href = result.urls.full; // high-res download
+                link.download = "image.jpg";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+
+            // Open modal
             image.addEventListener("click", () => {
                 modal.style.display = "flex";
                 modalImg.src = result.urls.regular;
@@ -119,6 +180,7 @@ async function searchImages(){
 
             container.appendChild(image);
             container.appendChild(favBtn);
+            container.appendChild(downloadBtn);
             searchResult.appendChild(container);
         });
 
@@ -151,7 +213,7 @@ viewSavedBtn.addEventListener("click", () => {
     }
 });
 
-// Search
+// Search form submit
 searchForm.addEventListener("submit",(e) =>{
     e.preventDefault();
     page = 1;
