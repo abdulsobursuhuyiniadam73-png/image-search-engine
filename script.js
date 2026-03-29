@@ -5,6 +5,9 @@ const searchBox = document.getElementById("search-box");
 const searchResult = document.getElementById("search-result");
 const viewSavedBtn = document.getElementById("view-saved-btn");
 
+// Theme Toggle
+const themeToggle = document.getElementById("theme-toggle");
+
 // Modal
 const modal = document.getElementById("image-modal");
 const modalImg = document.getElementById("modal-img");
@@ -18,6 +21,32 @@ let isLoading = false;
 // Load saved images
 let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
+
+//THEME FUNCTIONALITY
+
+// Load saved theme
+if(localStorage.getItem("theme") === "dark"){
+    document.body.classList.add("dark-theme");
+    if(themeToggle) themeToggle.src = "images/sun.png";
+} else {
+    if(themeToggle) themeToggle.src = "images/moon.png";
+}
+
+// Toggle theme
+if(themeToggle){
+    themeToggle.addEventListener("click", () => {
+        document.body.classList.toggle("dark-theme");
+
+        if(document.body.classList.contains("dark-theme")){
+            themeToggle.src = "images/sun.png";
+            localStorage.setItem("theme", "dark");
+        } else {
+            themeToggle.src = "images/moon.png";
+            localStorage.setItem("theme", "light");
+        }
+    });
+}
+
 function saveToLocalStorage() {
     localStorage.setItem("favorites", JSON.stringify(favorites));
 }
@@ -25,7 +54,7 @@ function saveToLocalStorage() {
 // Function to create download button with blob-based download
 function createDownloadButton(imageUrl) {
     const downloadBtn = document.createElement("img");
-    downloadBtn.src = "download.jpeg"; // your icon file
+    downloadBtn.src = "download.jpeg";
     downloadBtn.style.position = "absolute";
     downloadBtn.style.bottom = "10px";
     downloadBtn.style.right = "15px";
@@ -37,7 +66,7 @@ function createDownloadButton(imageUrl) {
     downloadBtn.style.padding = "5px";
 
     downloadBtn.addEventListener("click", async (e) => {
-        e.stopPropagation(); // prevent modal from opening
+        e.stopPropagation();
         try {
             const response = await fetch(imageUrl);
             const blob = await response.blob();
@@ -56,7 +85,7 @@ function createDownloadButton(imageUrl) {
     return downloadBtn;
 }
 
-// Display images (search results or saved)
+// Display images
 function displayImages(images) {
     searchResult.innerHTML = "";
 
@@ -85,10 +114,8 @@ function displayImages(images) {
             displaySaved();
         });
 
-        // Download button
         const downloadBtn = createDownloadButton(src);
 
-        // Open modal on image click
         image.addEventListener("click", () => {
             modal.style.display = "flex";
             modalImg.src = src;
@@ -101,14 +128,14 @@ function displayImages(images) {
     });
 }
 
-// Show saved images
+// Show saved
 function displaySaved() {
     showingSaved = true;
     viewSavedBtn.textContent = "Back to Search 🔍";
     displayImages(favorites);
 }
 
-// Fetch images from Unsplash
+// Fetch images
 async function searchImages() {
     if (isLoading) return;
 
@@ -156,10 +183,8 @@ async function searchImages() {
                 saveToLocalStorage();
             });
 
-            // Download button (high-res)
             const downloadBtn = createDownloadButton(result.urls.full);
 
-            // Open modal
             image.addEventListener("click", () => {
                 modal.style.display = "flex";
                 modalImg.src = result.urls.regular;
@@ -198,7 +223,7 @@ viewSavedBtn.addEventListener("click", () => {
     }
 });
 
-// Search form submit
+// Search
 searchForm.addEventListener("submit", (e) => {
     e.preventDefault();
     page = 1;
