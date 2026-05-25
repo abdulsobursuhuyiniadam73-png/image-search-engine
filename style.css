@@ -134,7 +134,8 @@ button{
 
 /* DARK MODE ICON */
 #icon{
-    width: 100px;
+    width: 35px; !important;
+    height: 35px; !important;
     cursor: pointer;
     top: 20px;
     right: 20px;
