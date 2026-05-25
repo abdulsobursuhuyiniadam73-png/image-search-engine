@@ -134,16 +134,16 @@ button{
 
 /* DARK MODE ICON */
 #icon{
-    width: 30px;
+    width: 35px;
     cursor: pointer;
     top: 20px;
     right: 20px;
     position: fixed;
-    padding: 10px 12px;
-    border: none;
+    z-index: 1000;
     
 }
-#theme-toggle:hover{
+
+#icon:hover{
     transform: scale(1.1);
     transition: 0.2s;
 }
