@@ -28,32 +28,28 @@ let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
 // 🌙 THEME FUNCTIONALITY
 
-if(themeToggle){
+var icon = document.getElementById("icon");
 
-    // Load saved theme
-    if(localStorage.getItem("theme") === "dark"){
-        document.body.classList.add("dark-theme");
-        themeToggle.src = sunIcon;
-    } else {
-        themeToggle.src = moonIcon;
-    }
-
-    // Toggle theme
-    themeToggle.addEventListener("click", () => {
-        document.body.classList.toggle("dark-theme");
-
-        if(document.body.classList.contains("dark-theme")){
-            themeToggle.src = sunIcon;
-            localStorage.setItem("theme", "dark");
-        } else {
-            themeToggle.src = moonIcon;
-            localStorage.setItem("theme", "light");
-        }
-    });
+// 👉 Load saved theme when page opens
+if(localStorage.getItem("theme") === "dark"){
+    document.body.classList.add("dark-theme");
+    icon.src = "images/pic19.png";
+}else{
+    document.body.classList.remove("dark-theme");
+    icon.src = "images/pic18.png";
 }
 
-function saveToLocalStorage() {
-    localStorage.setItem("favorites", JSON.stringify(favorites));
+// 👉 Toggle theme on click
+icon.onclick = function(){
+    document.body.classList.toggle("dark-theme");
+
+    if(document.body.classList.contains("dark-theme")){
+        icon.src = "images/pic19.png";
+        localStorage.setItem("theme", "dark");   // save
+    }else{
+        icon.src = "images/pic18.png";
+        localStorage.setItem("theme", "light");  // save
+    }
 }
 
 // Download button (blob method)
