@@ -134,14 +134,8 @@ button{
 
 /* DARK MODE ICON */
 #icon{
-    width: 35px; !important;
-    height: 35px; !important;
+    width: 30px;
     cursor: pointer;
-    top: 20px;
-    right: 20px;
-    position: fixed;
-    z-index: 1000;
-    
 }
 
 #icon:hover{
