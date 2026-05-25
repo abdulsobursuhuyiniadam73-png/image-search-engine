@@ -1,20 +1,21 @@
-:root{
-    --primary-color: #39297b;
-    --secondary-color: #ffffff;
-    --card-color: #434989;
-}
-
-.dark-theme{
-    --primary-color: #000106;
-    --secondary-color: #ffffff;
-    --card-color: #1c1c1c;
-}
 
 *{
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
     box-sizing: border-box;
+}
+
+/* COLORS */
+:root{
+    --primary-color: #eff4fe;
+    --secondary-color: #212121;
+}
+
+.dark-theme{
+    --primary-color: #000106;
+    --secondary-color: #fff;
+    --card-color: #1c1c1c;
 }
 
 body{
@@ -131,20 +132,11 @@ button{
     transform: scale(1.05);
 }
 
-#theme-toggle{
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 35px;
-    height: 35px;
+/* DARK MODE ICON */
+#icon{
+    width: 30px;
     cursor: pointer;
-    z-index: 1001;
-    background: white;
-    padding: 6px;
-    border-radius: 50%;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
-
 #theme-toggle:hover{
     transform: scale(1.1);
     transition: 0.2s;
