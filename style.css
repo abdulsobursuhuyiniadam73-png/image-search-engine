@@ -136,6 +136,9 @@ button{
 #icon{
     width: 30px;
     cursor: pointer;
+    position: absolute;
+    top: 80px;
+    right: 100px;
 }
 #theme-toggle:hover{
     transform: scale(1.1);
