@@ -5,12 +5,7 @@ const searchBox = document.getElementById("search-box");
 const searchResult = document.getElementById("search-result");
 const viewSavedBtn = document.getElementById("view-saved-btn");
 
-// Theme Toggle
-const themeToggle = document.getElementById("theme-toggle");
 
-// Online Icons
-const moonIcon = "https://cdn-icons-png.flaticon.com/512/747/747376.png";
-const sunIcon = "https://cdn-icons-png.flaticon.com/512/869/869869.png";
 
 // Modal
 const modal = document.getElementById("image-modal");
@@ -26,11 +21,11 @@ let isLoading = false;
 let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
 
-// 🌙 THEME FUNCTIONALITY
+// THEME FUNCTIONALITY
 
 var icon = document.getElementById("icon");
 
-// 👉 Load saved theme when page opens
+//  Load saved theme when page opens
 if(localStorage.getItem("theme") === "dark"){
     document.body.classList.add("dark-theme");
     icon.src = "images/pic19.png";
@@ -39,7 +34,7 @@ if(localStorage.getItem("theme") === "dark"){
     icon.src = "images/pic18.png";
 }
 
-// 👉 Toggle theme on click
+// Toggle theme on click
 icon.onclick = function(){
     document.body.classList.toggle("dark-theme");
 
