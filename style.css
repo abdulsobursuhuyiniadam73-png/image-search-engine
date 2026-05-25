@@ -66,7 +66,7 @@ form{
     max-width: 600px;
     margin: auto;
     height: 80px;
-    background: #434989;
+    background: #eff4fe;
     display: flex;
     align-items: center;
     border-radius: 8px;
@@ -79,7 +79,7 @@ form input{
     border: 0;
     outline: 0;
     background: transparent;
-    color: white;
+    color: black;
     font-size: 18px;
     padding: 0 30px;
 }
@@ -96,7 +96,7 @@ button{
 }
 
 ::placeholder{
-    color: white;
+    color: black;
     font-size: 18px;
 }
 
